@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.tablesorter.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<script type="text/javascript" th:src="@{/js/sortedtable.js}"></script>
+	<meta charset="UTF-8">
+	<title>利用者一覧</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+
+	<div class="container">
+		<h2>利用者一覧</h2>
+		<form action="/user/search" method="post">
+			<div id="search_container">
+				<input type="search" name="search" placeholder="キーワードを入力" th:value="${searchvalue}">
+				<input type="image" name="submit" th:src="@{/img/icon_search.png}">
+			</div>
+		</form>
+
+
+		<table class="table-sorted" id="js-sort">
+			<thead>
+				<tr>
+					<th id="info"></th>
+					<th>社員番号</th>
+					<th>氏名</th>
+					<th>所属</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${userList}">
+					<td><a th:href="@{/user/datail/{userId}(userId=${user.userId})}"><img alt="詳細"
+								th:src="@{/img/icon_info.png}" id="img-info"></a></td>
+					<td th:text="${user.staffId}"></td>
+					<td th:text="${user.name}"></td>
+					<td th:text="${user.department}"></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<div class="float-button">
+		<p class="rounded-button"><button onclick='location.href="/user/entry"'>新規追加</button></p>
+	</div>
+	<div id="js-footer"></div>
+
+
+</body>
+
+</html>

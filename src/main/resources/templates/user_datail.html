@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.tablesorter.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<meta charset="UTF-8">
+	<title>利用者詳細</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+
+	<div class="container">
+		<div class="datail">
+			<div class="first-container">
+				<h2>利用者詳細</h2>
+				<ul th:object="${userdatail}">
+					<li>
+						<span class="datail-label">社員番号</span>
+						<span class="datail-text" th:text="*{staffId}"></span>
+					</li>
+					<li>
+						<span class="datail-label">氏名</span>
+						<span class="datail-text" th:text="*{name}"></span>
+					</li>
+					<li>
+						<span class="datail-label">所属部署</span>
+						<span class="datail-text" th:text="*{department}"></span>
+					</li>
+					<li>
+						<span class="datail-label">電話番号</span>
+						<span class="datail-text" th:text="*{telNumber}"></span>
+					</li>
+					<li>
+						<span class="datail-label">メールアドレス</span>
+						<span class="datail-text" th:text="*{mailAddress}"></span>
+					</li>
+					<li>
+						<span class="datail-label">生年月日</span>
+						<span class="datail-text" th:text="${#dates.format(userdatail.birthday, 'yyyy/MM/dd')}"></span>
+					</li>
+					<li>
+						<span class="datail-label">性別</span>
+						<th:block th:switch="*{gender}">
+							<span class="datail-text" th:case="1">男</span>
+							<span class="datail-text" th:case="2">女</span>
+							<span class="datail-text" th:case=*></span>
+						</th:block>
+					</li>
+					<li>
+						<span class="datail-label">PCアカウント権限</span>
+						<span class="datail-text" th:text="*{admin} ? '管理者':'利用者'"></span>
+					</li>
+					<li>
+						<span class="datail-label">在籍状況</span>
+						<span class="datail-text"
+							th:text="*{retirementFlag} ? '退職済（__${#dates.format(userdatail.retirementDate, 'yyyy/MM/dd')}__）':'在籍中'"></span>
+					</li>
+					<li>
+						<span class="datail-label">備考</span>
+						<span class="datail-text" th:text="*{userRemarks}"></span>
+					</li>
+					<li>
+						<span class="datail-label">登録日</span>
+						<span class="datail-text"
+							th:text="${#dates.format(userdatail.registrationDate, 'yyyy/MM/dd HH:mm')}"></span>
+					</li>
+					<li>
+						<span class="datail-label">更新日</span>
+						<span class="datail-text"
+							th:text="${#dates.format(userdatail.updateDate, 'yyyy/MM/dd HH:mm')}"></span>
+					</li>
+				</ul>
+
+				<div class="rounded-button" id="js-button-field">
+					<button id="js-edit-button"
+						th:attr="onClick=|location.href='@{/user/update/{userId}(userId=__${userdatail.userId}__)}'|">情報更新</button>
+					<button th:attr="onClick=|location.href='@{/user}'|">戻る</button>
+				</div>
+				<a class="delete-link" th:href="@{/user/delete/{userId}(userId=${userdatail.userId})}">利用者を削除</a>
+			</div>
+			<div class="user-history">
+				<h3>貸出履歴（最新5件）</h3>
+				<table class="table-sorted" id="js-sort">
+					<thead>
+						<tr>
+							<th>資産番号</th>
+							<th>貸出日</th>
+							<th>返却完了日</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="rental : ${rentalHistory}">
+							<td><a th:href="@{/device/datail/{deviceId}(deviceId=${rental.deviceId})}"><span
+										th:text="${rental.device.deviceName}" /></a></td>
+							<td th:text="${#dates.format(rental.rentalStart, 'yyyy/MM/dd')}"></td>
+							<td th:text="${#dates.format(rental.returnDate, 'yyyy/MM/dd HH:mm')}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="rounded-button">
+					<button
+						th:attr="onClick=|location.href='@{/rental/history/{staffId}(staffId=__${userdatail.staffId}__)}'|">全件表示</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+</body>
+
+</html>

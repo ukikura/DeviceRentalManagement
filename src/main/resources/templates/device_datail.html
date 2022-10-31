@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.tablesorter.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<script type="text/javascript" th:src="@{/js/devicedatail.js}"></script>
+	<meta charset="UTF-8">
+	<title>機器詳細</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+
+	<div class="container">
+		<div class="datail">
+
+			<ul th:object="${devicedatail}">
+				<li>
+					<span class="datail-label">資産番号</span>
+					<span class="datail-text" th:text="*{deviceName}"></span>
+				</li>
+				<li>
+					<span class="datail-label">機器タイプ</span>
+					<span class="datail-text" th:text="${typeParams[__*{type}__]}"></span>
+				</li>
+				<li>
+					<span class="datail-label">棚卸日</span>
+					<span class="datail-text"
+						th:text="${#dates.format(devicedatail.inventoryDate, 'yyyy/MM/dd')}"></span>
+				</li>
+				<li>
+					<span class="datail-label">メーカー</span>
+					<span class="datail-text" th:text="*{maker}"></span>
+				</li>
+				<li>
+					<span class="datail-label">OS</span>
+					<span class="datail-text" th:text="*{os}"></span>
+				</li>
+				<li>
+					<span class="datail-label">メモリ</span>
+					<span class="datail-text" th:text="${memoryParams[__*{memory}__]}"></span>
+				</li>
+				<li>
+					<span class="datail-label">容量</span>
+					<span class="datail-text" th:text="${capacityParams[__*{capacity}__]}"></span>
+				</li>
+				<li>
+					<span class="datail-label">グラフィックボード</span>
+					<span class="datail-text" th:text="*{graphicBoard==true} ? あり:なし"></span>
+				</li>
+				<li>
+					<span class="datail-label">保管場所</span>
+					<span class="datail-text" th:text="*{room}"></span>
+				</li>
+				<li>
+					<span class="datail-label">状態</span>
+					<th:block th:switch="*{brokenFlag}">
+						<span th:case="false" th:text="*{available} ? '利用可能':'貸出中'" class="datail-text"
+							id="js-status"></span>
+						<span th:case=* class="datail-text" id="js-status">故障中</span>
+					</th:block>
+				</li>
+				<li>
+					<span class="datail-label">備考</span>
+					<span class="datail-text" th:text="*{deviceRemarks}"></span>
+				</li>
+				<li>
+					<span class="datail-label">登録日</span>
+					<span class="datail-text"
+						th:text="${#dates.format(devicedatail.registrationDate, 'yyyy/MM/dd')}"></span>
+				</li>
+				<li>
+					<span class="datail-label">更新日</span>
+					<span class="datail-text" th:text="${#dates.format(devicedatail.updateDate, 'yyyy/MM/dd')}"></span>
+				</li>
+
+
+			</ul>
+			<div class="rounded-button">
+				<button id="js-rental-button"
+					th:attr="onClick=|location.href='@{/rental/entry/?{type}&{deviceName}(deviceName=${devicedatail.deviceName},type=${devicedatail.type})}'|">貸出申請</button>
+			</div>
+			<div class="rounded-button" id="js-button-field">
+				<button id="js-edit-button"
+					th:attr="onClick=|location.href='@{/device/update/{deviceId}(deviceId=__${devicedatail.deviceId}__)}'|">情報更新</button>
+				<button th:attr="onClick=|location.href='@{/device/}'|" id="back-button">戻る</button>
+			</div>
+			<a class="delete-link" th:href="@{/device/delete/{deviceId}(deviceId=${devicedatail.deviceId})}">機器を削除</a>
+		</div>
+	</div>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentaloption.js}"></script>
+	<meta charset="UTF-8">
+	<title>貸出登録</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+	<div class="container">
+
+		<form action="/form/rental/entry" method="post" class="form-device" th:object=${rentalForm}>
+			<ul>
+				<li>
+					<label for="staffId" class="required">社員番号</label>
+					<input type="text" id="js-staffId" name="staffId" th:value="*{staffId}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('staffId')}" th:errors="*{staffId}" class="errormessage"
+					id="js-staffIdtext"></span>
+				<li>
+					<label for="type" class="required">機器タイプ</label>
+					<select id="js-type" name="type" th:field="*{type}" class="js-devicetype">
+						<option th:value="1">PC</option>
+						<option th:value="2">マウス</option>
+						<option th:value="3">モニター</option>
+					</select><br />
+				</li>
+				<li>
+					<div id="js-rentaloption">
+						<label for="deviceName" class="required">資産番号</label>
+						<select id="js-rentaloption-deviceName" name="deviceName">
+							<option th:each="deviceName: ${deviceNameList}" th:value="${deviceName}"
+								th:text="${deviceName}"></option>
+						</select>
+						<br />
+					</div>
+				</li>
+				<li>
+					<label for="rentalEnd" class="required">返却予定日</label>
+					<input type="date" id="rentalEnd" name="rentalEnd" th:field="*{rentalEnd}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('rentalEnd')}" th:errors="*{rentalEnd}" class="errormessage"></span>
+				<li>
+					<label for="place" class="required">利用場所</label>
+					<input type="text" id="place" name="place" th:value="*{place}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="errormessage"></span>
+				<li>
+					<label for="rentalRemarks">備考</label>
+					<textarea maxlength="255" id="rentalRemarks" name="rentalRemarks"
+						th:value="*{rentalRemarks}"></textarea><br />
+				</li>
+				<span th:if="${#fields.hasErrors('rentalRemarks')}" th:errors="*{rentalRemarks}"
+					class="errormessage"></span>
+
+			</ul>
+			<div class="rounded-button">
+				<input type="button" th:attr="onClick=|location.href='@{/rental}'|" value="戻る">
+				<input type="submit" value="登録" />
+			</div>
+
+
+		</form>
+
+	</div>
+</body>
+
+</html>

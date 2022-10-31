@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<meta charset="UTF-8">
+	<title>貸出登録</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+	<div class="container">
+
+		<form action="/form/rental/return" method="post" class="form-device" th:object=${rentalForm}>
+
+			<input type="hidden" name="rentalId" th:value="*{rentalId}">
+			<input type="hidden" name="userId" th:value="*{user.userId}">
+			<input type="hidden" name="deviceId" th:value="*{device.deviceId}">
+
+			<ul>
+				<li>
+					<label for="staffId">社員番号</label>
+					<span id="js-staffId" th:text="*{user.staffId}" class="form-param-text"></span><br />
+				</li>
+				<span th:if="${#fields.hasErrors('user.staffId')}" th:errors="*{user.staffId}" class="errormessage"
+					id="js-staffIdtext"></span>
+
+				<li>
+					<label for="type">機器タイプ</label>
+					<span id="type" th:text="${typeParams[__*{device.type}__]}" class="form-param-text"></span><br />
+				</li>
+
+				<li>
+					<label for="deviceName">資産番号</label>
+					<span id="deviceName" th:text="*{device.deviceName}" class="form-param-text"></span><br />
+				</li>
+
+				<li>
+					<label for="brokenFlag">故障</label>
+					<span class="radiobutton">
+						<input type="radio" name="brokenFlag" value="1">はい
+						<input type="radio" name="brokenFlag" value="0" checked>いいえ
+						<br>
+					</span>
+				</li>
+
+				<li>
+					<label for="deviceRemarks">機器備考欄</label>
+					<textarea maxlength="255" type="text" id="deviceRemarks" name="deviceRemarks"
+						th:value="*{device.deviceRemarks}"></textarea><br />
+				</li>
+				<span th:if="${#fields.hasErrors('device.deviceRemarks')}" th:errors="*{device.deviceRemarks}"
+					class="errormessage"></span>
+			</ul>
+			<div class="rounded-button">
+				<input type="button" th:attr="onClick=|location.href='@{/rental}'|" value="戻る">
+				<input type="submit" value="返却" />
+			</div>
+		</form>
+
+	</div>
+</body>
+
+</html>

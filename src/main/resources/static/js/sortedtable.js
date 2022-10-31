@@ -1,0 +1,7 @@
+
+
+$(function() {
+  $("#js-sort").tablesorter();
+});
+
+

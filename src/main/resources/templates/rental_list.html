@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.tablesorter.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<script type="text/javascript" th:src="@{/js/sortedtable.js}"></script>
+	<meta charset="UTF-8">
+	<title>貸出情報</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+
+	<div class="container">
+		<div class="contentsgroup1">
+			<div class="content_left">
+
+				<h2>貸出中機器</h2>
+				<form action="/rental/search" method="post">
+					<div id="search_container">
+						<input type="search" name="search" placeholder="資産番号/名前で検索" th:value="${searchvalue}">
+						<input type="image" name="submit" th:src="@{/img/icon_search.png}">
+					</div>
+				</form>
+			</div>
+			<div class="content_right">
+				<div class="devices_available">
+					<ul class="devices_available_list">
+						<li>空きPC</li>
+						<li>空きマウス</li>
+						<li>空きモニター</li>
+					</ul>
+					<ul class="devices_available_amount">
+						<li>
+							<p th:text="${count[0]}"></p>
+						</li>
+						<li>
+							<p th:text="${count[1]}"></p>
+						</li>
+						<li>
+							<p th:text="${count[2]}"></p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<table class="table-sorted" id="js-sort">
+			<thead>
+				<tr>
+					<th id="info"></th>
+					<th>資産番号</th>
+					<th>機器タイプ</th>
+					<th>利用者</th>
+					<th>貸出日</th>
+					<th>返却期限</th>
+					<th>申請</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="device : ${rentalList}">
+					<td><a th:href="@{/rental/datail/{rentalId}(rentalId=${device.rentalId})}"><img alt="詳細"
+								th:src="@{/img/icon_info.png}" id="img-info"></a></td>
+					<td><a th:href="@{/device/datail/{deviceId}(deviceId=${device.deviceId})}"><span
+								th:text="${device.device.deviceName}" /></a></td>
+					<td th:text="${typeParams[__${device.device.type}__]}"></td>
+					<td><a th:href="@{/user/datail/{userId}(userId=${device.userId})}"><span
+								th:text="${device.user.StaffId}" /></td>
+					<td th:text="${#dates.format(device.rentalStart, 'yyyy/MM/dd')}"></td>
+					<td th:text="${#dates.format(device.rentalEnd, 'yyyy/MM/dd')}"
+						th:classappend="${#dates.format(device.rentalEnd, 'yyyy/MM/dd')} lt ${#calendars.format(#calendars.createNow(), 'yyyy/MM/dd')} ? 'deadline'">
+					</td>
+					<th:block th:switch="${device.returnDate}">
+						<td th:case="null"><button
+								th:attr="onClick=|location.href='@{/rental/return/{rentalId}(rentalId=__${device.rentalId}__)}'|">返却</button>
+						</td>
+						<td th:case=*
+							th:text="${#dates.format(device.returnDate, 'yyyy/MM/dd')} gt ${#calendars.format(#calendars.createNow(), 'yyyy/MM/dd')} ? '':'貸出'">
+						</td>
+					</th:block>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<div class="float-button">
+		<p class="rounded-button"><button onclick='location.href="/rental/entry"'>新規申請</button></p>
+	</div>
+
+
+
+	<div id="js-footer"></div>
+
+
+</body>
+
+</html>

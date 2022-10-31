@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<meta charset="UTF-8">
+	<title>利用者情報削除</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+	<div class="container">
+		<div class="delete-page">
+			利用者情報を削除しますか？<br>
+			<div class="rounded-button">
+				<button onclick="history.back();">戻る</button>
+				<button
+					th:attr="onClick=|location.href='@{/user/delete/{userId}/flag-on(userId=__${userdatail.userId}__)}'|">削除</button>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

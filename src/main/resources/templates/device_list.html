@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.tablesorter.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<script type="text/javascript" th:src="@{/js/sortedtable.js}"></script>
+	<meta charset="UTF-8">
+	<title>機器一覧</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+
+	<div class="container">
+		<h2>機器一覧</h2>
+		<form action="/device/search" method="post" th:object="${deviceSearchForm}">
+			<div id="search_container">
+				<input type="search" name="search" placeholder="資産番号を検索" th:value="*{search}">
+				<input type="image" name="submit" th:src="@{/img/icon_search.png}">
+			</div>
+			<ul id="filter_container">
+				<li class="form-element_item">
+					<label for="type">機器タイプ</label><br />
+					<select id="type" name="type" class="js-devicetype" onchange="this.form.submit();">
+						<option th:value="0">指定しない</option>
+						<option th:each="i : ${#numbers.sequence(1, 3)}" th:value="${i}"
+							th:text="${typeParams[__${i}__]}" th:selected="${i==__${deviceSearchForm.type}__}"></option>
+
+					</select><br />
+				</li>
+				<li class="form-element_item">
+					<label for="memory">メモリ</label><br />
+					<select id="memory" name="memory" onchange="this.form.submit();">
+						<option th:value="0">指定しない</option>
+						<option th:each="i : ${#numbers.sequence(1, 3)}" th:value="${i}"
+							th:text="${memoryParams[__${i}__]}" th:selected="${i==__${deviceSearchForm.memory}__}">8GB
+						</option>
+					</select><br />
+				</li>
+				<li class="form-element_item">
+					<label for="capacity">容量</label><br />
+					<select id="capacity" name="capacity" onchange="this.form.submit();">
+						<option th:value="0">指定しない</option>
+						<option th:each="i : ${#numbers.sequence(1, 2)}" th:value="${i}"
+							th:text="${capacityParams[__${i}__]}" th:selected="${i==__${deviceSearchForm.capacity}__}">
+						</option>
+					</select><br />
+				</li>
+				<li class="form-element_item">
+					<label for="graphicBoard">グラフィックボード</label><br />
+					<select id="graphicBoard" name="graphicBoard" onchange="this.form.submit();">
+						<option th:value="0">指定しない</option>
+						<option th:each="i : ${#numbers.sequence(1, 2)}" th:value="${i}" th:text="${i==1} ? あり:なし"
+							th:selected="${i==__${deviceSearchForm.graphicBoard}__}"></option>
+					</select><br />
+				</li>
+				<li class="form-element_item">
+					<label for="status">状態</label><br />
+					<select id="status" name="status" onchange="this.form.submit();">
+						<option th:value="0">指定しない</option>
+						<option th:value="1" th:selected="${deviceSearchForm.status==1}">利用可能</option>
+						<option th:value="2" th:selected="${deviceSearchForm.status==2}">貸出中</option>
+						<option th:value="3" th:selected="${deviceSearchForm.status==3}">故障中</option>
+					</select><br />
+				</li>
+			</ul>
+		</form>
+
+
+		<table class="table-sorted" id="js-sort">
+			<thead>
+				<tr>
+					<th id="info"></th>
+					<th>資産番号</th>
+					<th>機器タイプ</th>
+					<th>メモリ</th>
+					<th>容量</th>
+					<th>グラフィックボード</th>
+					<th>状態</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="device : ${deviceList}">
+					<td><a th:href="@{/device/datail/{deviceId}(deviceId=${device.deviceId})}"><img alt="詳細"
+								th:src="@{/img/icon_info.png}" id="img-info"></a></td>
+					<td th:text="${device.deviceName}"></td>
+					<td th:text="${typeParams[__${device.type}__]}"></td>
+					<td th:text="${memoryParams[__${device.memory}__]}"></td>
+					<td th:text="${capacityParams[__${device.capacity}__]}"></td>
+					<th:block th:switch="${typeParams[__${device.type}__]}">
+						<td th:case="PC" th:text="${device.graphicBoard==true} ? 'あり':'なし'"></td>
+						<td th:case=*></td>
+					</th:block>
+					<th:block th:switch="${device.brokenFlag}">
+						<td th:case="true">故障中</td>
+						<td th:case=* th:text="${device.available} ? '利用可能':'貸出中'"></td>
+					</th:block>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<div class="float-button">
+		<p class="rounded-button"><button onclick='location.href="/device/entry"'>新規追加</button></p>
+	</div>
+	<div id="js-footer"></div>
+
+</body>
+
+</html>

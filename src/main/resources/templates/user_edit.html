@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<script type="text/javascript" th:src="@{/js/useroption.js}"></script>
+	<meta charset="UTF-8">
+	<title>利用者登録</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+	<div class="container">
+
+		<form action="/form/user/edit" method="post" class="form-user" th:object=${userForm}>
+
+			<input type="hidden" id="userId" name="userId" th:value="*{userId}" />
+			<input type="hidden" id="registrationDate" name="registrationDate" th:value="*{registrationDate}" />
+			<input type="hidden" id="staffId" name="staffId" th:value="*{staffId}" />
+			a<p th:text="${userForm.registrationDate}"></p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+			<ul>
+				<li>
+					<label for="staffId" class="required">社員番号</label>
+					<span th:text="*{staffId}" class="form-param-text"></span><br />
+				</li>
+				<span th:if="${#fields.hasErrors('staffId')}" th:errors="*{staffId}" class="errormessage"></span>
+
+				<li>
+					<label for="name" class="required">名前</label>
+					<input type="text" id="name" name="name" th:value="*{name}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="errormessage"></span>
+
+				<li>
+					<label for="department" class="required">所属部署</label>
+					<input type="text" id="department" name="department" th:value="*{department}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="errormessage"></span>
+
+				<li>
+					<label for="telNumber" class="required">電話番号</label>
+					<input type="tel" id="telNumber" name="telNumber" th:value="*{telNumber}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('telNumber')}" th:errors="*{telNumber}" class="errormessage"></span>
+
+				<li>
+					<label for="mailAddress" class="required">メールアドレス</label>
+					<input type="text" id="mailAddress" name="mailAddress" th:value="*{mailAddress}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}"
+					class="errormessage"></span>
+
+				<li>
+					<label for="birthday">生年月日</label>
+					<input type="date" id="birthday" name="birthday" th:field="*{birthday}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="errormessage"></span>
+
+				<li>
+					<label for="gender">性別</label>
+					<span class="radiobutton">
+						<input type="radio" id="gender" name="gender" th:value="1" th:field="*{gender}" />男
+						<input type="radio" id="gender" name="gender" th:value="2" th:field="*{gender}" />女<br />
+					</span>
+				</li>
+
+				<li>
+					<label for="admin" class="required">PCアカウント権限</label>
+					<span class="radiobutton">
+						<input type="radio" id="admin" name="admin" th:value="0" th:field="*{admin}" checked />利用者
+						<input type="radio" id="admin" name="admin" th:value="1" th:field="*{admin}" />管理者
+						<br />
+					</span>
+				</li>
+
+				<li>
+					<label for="retirementFlag" class="required">在籍状況</label>
+					<span class="radiobutton">
+						<input type="radio" id="js-retirement" name="retirementFlag" th:value="0"
+							th:field="*{retirementFlag}" checked />在籍中
+						<input type="radio" id="js-retirement" name="retirementFlag" th:value="1"
+							th:field="*{retirementFlag}" />退職済
+						<br />
+					</span>
+				</li>
+
+				<li>
+					<div id="js-option" class="hidden">
+						<label for="retirementDate">退職日</label>
+						<input type="date" id="retirementDate" name="retirementDate" th:field="*{retirementDate}"
+							class="js-retirement" /><br />
+					</div>
+					<span th:if="${#fields.hasErrors('retirementDate')}" th:errors="*{retirementDate}"
+						class="errormessage"></span>
+				</li>
+
+				<li>
+					<label for="userRemarks">備考</label>
+					<textarea maxlength="255" type="text" id="userRemarks" name="userRemarks"
+						th:value="*{userRemarks}"></textarea><br />
+				</li>
+			</ul>
+			<div class="rounded-button">
+				<input type="button"
+					th:attr="onClick=|location.href='@{/user/datail/{userId}(userId=${userForm.userId})}'|" value="戻る">
+				<input type="submit" value="登録" />
+			</div>
+		</form>
+
+	</div>
+</body>
+
+</html>

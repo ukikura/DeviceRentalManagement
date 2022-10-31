@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.tablesorter.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<meta charset="UTF-8">
+	<title>機器詳細</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+
+	<div class="container">
+		<h2>貸出詳細情報</h2>
+		<div class="datail">
+
+			<ul th:object="${rentaldatail}">
+				<li>
+					<span class="datail-label">機器名</span>
+					<a th:href="@{/device/datail/{deviceId}(deviceId=${rentaldatail.device.deviceId})}"><span
+							th:text="*{device.deviceName}" class="datail-text"></span></a>
+				</li>
+				<li>
+					<span class="datail-label">利用者</span>
+					<a th:href="@{/user/datail/{userId}(userId=${rentaldatail.userId})}"><span
+							th:text="${rentaldatail.user.StaffId}" class="datail-text"></span></a>
+				</li>
+				<li>
+					<span class="datail-label">貸出開始日</span>
+					<span class="datail-text"
+						th:text="${#dates.format(rentaldatail.rentalStart, 'yyyy/MM/dd HH:mm')}"></span>
+				</li>
+				<li>
+					<span class="datail-label">返却期限</span>
+					<span class="datail-text" th:text="${#dates.format(rentaldatail.rentalEnd, 'yyyy/MM/dd')}"></span>
+				</li>
+				<li>
+					<span class="datail-label">利用場所</span>
+					<span class="datail-text" th:text="*{place}"></span>
+				</li>
+				<li>
+					<span class="datail-label">備考</span>
+					<span class="datail-text" th:text="*{rentalRemarks==''} ? 'なし':*{rentalRemarks}"></span>
+				</li>
+				<li>
+					<span class="datail-label">返却完了日</span>
+					<span class="datail-text"
+						th:text="*{returnDate==null} ? '未返却':${#dates.format(rentaldatail.returnDate, 'yyyy/MM/dd HH:mm')}"></span>
+				</li>
+			</ul>
+
+			<div class="rounded-button" id="rentaldatail-button">
+				<button th:attr="onClick=|location.href='@{/rental}'|">戻る</button>
+				<th:block th:if="${rentaldatail.returnDate==null}">
+					<button
+						th:attr="onClick=|location.href='@{/rental/return/{rentalId}(rentalId=__${rentaldatail.rentalId}__)}'|">返却</button>
+				</th:block>
+			</div>
+
+		</div>
+	</div>
+
+
+
+</body>
+
+</html>

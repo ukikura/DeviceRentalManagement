@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<script type="text/javascript" th:src="@{/js/deviceoption.js}"></script>
+	<meta charset="UTF-8">
+	<title>機器登録</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+	<div class="container">
+		<form action="/form/device/entry" method="post" class="form-device" th:object=${deviceForm}>
+
+			<input type="hidden" id="deviceId" name="deviceId" th:value="*{deviceId}" />
+			<input type="hidden" id="registrationDate" name="registrationDate" th:value="*{registrationDate}" />
+			<ul>
+				<li>
+
+					<label for="deviceName" class="required">資産番号</label>
+					<input type="text" id="deviceName" name="deviceName" th:value="*{deviceName}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('deviceName')}" th:errors="*{deviceName}" class="errormessage"></span>
+				<li>
+					<label for="type" class="required">機器タイプ</label>
+					<select id="type" name="type" th:field="*{type}" class="js-devicetype">
+						<option th:value="1">PC</option>
+						<option th:value="2">マウス</option>
+						<option th:value="3">モニター</option>
+					</select><br />
+				</li>
+				<div class="js-pc-option">
+					<li>
+
+						<label for="os" class="required">OS</label>
+						<input type="text" id="os" name="os" th:value="*{os}" /><br />
+					</li>
+					<span th:if="${#fields.hasErrors('os')}" th:errors="*{os}" class="errormessage"></span>
+					<li>
+
+						<label for="memory" class="required">メモリ</label>
+						<select id="memory" name="memory" th:field="*{memory}">
+							<option th:value="0">-</option>
+							<option th:value="1">8GB</option>
+							<option th:value="2">16GB</option>
+							<option th:value="3">32GB</option>
+						</select><br />
+					</li>
+					<li>
+
+						<label for="capacity" class="required">容量</label>
+						<select id="capacity" name="capacity" th:field="*{capacity}">
+							<option th:value="0">-</option>
+							<option th:value="1">500GB</option>
+							<option th:value="2">1TB</option>
+						</select><br />
+					</li>
+					<li>
+
+						<label for=graphicBoard class="required">グラフィックボード</label>
+						<span class="radiobutton">
+							<input type="radio" id="graphicBoard" name="graphicBoard" th:value="1"
+								th:field="*{graphicBoard}" />あり
+							<input type="radio" id="graphicBoard" name="graphicBoard" th:value="0"
+								th:field="*{graphicBoard}" />なし<br />
+						</span>
+					</li>
+				</div>
+				<li>
+
+					<label for="maker">メーカー</label>
+					<input type="text" id="maker" name="maker" th:value="*{maker}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('maker')}" th:errors="*{maker}" class="errormessage"></span>
+				<li>
+
+					<label for="broken_flag" class="required">故障</label>
+					<span class="radiobutton">
+						<input type="radio" id="brokenFlag" name="brokenFlag" th:value="1" th:field="*{brokenFlag}" />あり
+						<input type="radio" id="brokenFlag" name="brokenFlag" th:value="0"
+							th:field="*{brokenFlag}" />なし<br />
+					</span>
+				</li>
+				<li>
+					<label for="inventoryDate" class="required">棚卸日</label>
+					<input type="date" id="inventoryDate" name="inventoryDate" th:field="*{inventoryDate}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('inventoryDate')}" th:errors="*{inventoryDate}"
+					class="errormessage"></span>
+				<li>
+
+					<label for="room" class="required">保管場所</label>
+					<input type="text" id="room" name="room" th:field="*{room}" /><br />
+				</li>
+				<span th:if="${#fields.hasErrors('room')}" th:errors="*{room}" class="errormessage"></span>
+				<li>
+					<label for="deviceRemarks">備考</label>
+					<textarea maxlength="255" id="deviceRemarks" name="deviceRemarks"
+						th:value="*{deviceRemarks}"></textarea><br />
+				</li>
+			</ul>
+
+			<div class="rounded-button">
+				<input type="button" th:attr="onClick=|location.href='@{/device}'|" value="戻る">
+				<input type="submit" value="登録" />
+			</div>
+
+		</form>
+	</div>
+
+</body>
+
+</html>

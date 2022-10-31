@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link th:href="@{/css/common.css}" rel="styleSheet">
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.tablesorter.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/rentalmanagement.js}"></script>
+	<script type="text/javascript" th:src="@{/js/sortedtable.js}"></script>
+	<meta charset="UTF-8">
+	<title>貸出履歴</title>
+</head>
+
+<body>
+	<div id="js-header"></div>
+
+	<div class="container">
+		<h2>貸出履歴</h2>
+		<form action="/rental/history/search" method="post">
+			<div id="search_container">
+				<input type="search" name="search" placeholder="資産番号/社員番号で検索" th:value="${searchvalue}">
+				<input type="image" name="submit" th:src="@{/img/icon_search.png}">
+			</div>
+		</form>
+
+
+		<table class="table-sorted" id="js-sort">
+			<thead>
+				<tr>
+					<th id="info"></th>
+					<th>資産番号</th>
+					<th>利用者</th>
+					<th>貸出日</th>
+					<th>返却期限</th>
+					<th>返却日</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="rental : ${rentalHistory}">
+					<td><a th:href="@{/rental/datail/{rentalId}(rentalId=${rental.rentalId})}"><img alt="詳細"
+								th:src="@{/img/icon_info.png}" id="img-info"></a></td>
+					<td><a th:href="@{/device/datail/{deviceId}(deviceId=${rental.deviceId})}"><span
+								th:text="${rental.device.deviceName}" /></a></td>
+					<td><a th:href="@{/user/datail/{userId}(userId=${rental.userId})}"><span
+								th:text="${rental.user.StaffId}" /></a></td>
+					<td th:text="${#dates.format(rental.rentalStart, 'yyyy/MM/dd')}"></td>
+					<td th:text="${#dates.format(rental.rentalEnd, 'yyyy/MM/dd')}"></td>
+					<td
+						th:text="${rental.returnDate==null} ? '未返却':${#dates.format(rental.returnDate, 'yyyy/MM/dd HH:mm')}">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+
+
+</body>
+
+</html>
